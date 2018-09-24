@@ -1,5 +1,6 @@
 // Variables 
-const courses = document.querySelector('#courses-list');
+const courses = document.querySelector('#courses-list'),
+    shoppingCartContent = document.querySelector('#cart-content tbody');
 
 
 
@@ -38,12 +39,27 @@ let getCourseInfo = course => {
 }
 
 // Display the selected course into the shopping cart 
-let addIntoCart = courseInfo => {
-  // Create a <tr>
- const row = document.createElement('tr');
+let addIntoCart = course => {
+    // Create a <tr>
+    const row = document.createElement('tr');
 
- // Build the template 
-  
+    // Build the template 
+    row.innerHTML = `
+     <tr>
+         <td>
+            <img src="${course.image}" width = '100px'>       
+         </td>
+         <td>${course.title}</td>
+         <td>${course.price}</td>
+         <td>
+          <a href="#" class="remove" data-id="${course.id}">X</a>
+         </td>
+
+
+     </tr>
+  `;
+    // Add into the shopping cart
+    shoppingCartContent.appendChild(row);
 }
 
 
