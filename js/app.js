@@ -24,9 +24,27 @@ let buyCourse = (e) => {
 // Reads the HTML information of the selected course
 
 let getCourseInfo = course => {
-    console.log('get info', course);
+    // Create an Object with Course data 
+    const courseInfo = {
+
+        image: course.querySelector('img').src,
+        title: course.querySelector('h4').textContent,
+        price: course.querySelector('.price span').textContent,
+        id: course.querySelector('a').getAttribute('data-id')
+    }
+
+    // insert into the shopping cart 
+    addIntoCart(courseInfo);
 }
 
+// Display the selected course into the shopping cart 
+let addIntoCart = courseInfo => {
+  // Create a <tr>
+ const row = document.createElement('tr');
+
+ // Build the template 
+  
+}
 
 
 
