@@ -61,6 +61,38 @@ let addIntoCart = course => {
   `;
     // Add into the shopping cart
     shoppingCartContent.appendChild(row);
+
+    // Add course into Storage
+    saveIntoStorage(course);
+
+}
+
+// Add the courses into  the local storage
+
+let saveIntoStorage = course => {
+    let courses = getCourseFromStorage();
+
+    // add the course into the array
+    courses.push(course);
+
+    // since storage only saves strings , we need to convert JSON into String
+    localStorage.setItem('courses', JSON.stringify(courses));
+}
+
+// Get the contents from storage
+
+let getCourseFromStorage = () => {
+    let courses;
+
+    // if something exist on storage then we get the value,otherwise create an empty array
+
+    if (localStorage.getItem('courses') === null) {
+        courses = [];
+    } else {
+        courses = JSON.parse(localStorage.getItem('courses'));
+    }
+
+    return courses;
 }
 
 // Remove course from the dom
