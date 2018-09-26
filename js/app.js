@@ -114,6 +114,36 @@ let clearCart = (e) => {
     }
 }
 
+// Loads when document is ready and print courses into shopping cart
+
+let getFromLocalStorage = () => {
+    let coursesLS = getCourseFromStorage();
+
+    // Loop throught the courses and print into the cart
+
+    coursesLS.forEach(course => {
+        // create the <tr>
+        const row = document.createElement('tr');
+
+        // Build the template 
+        row.innerHTML = `
+         <tr>
+             <td>
+                <img src="${course.image}" width = '100px'>       
+             </td>
+             <td>${course.title}</td>
+             <td>${course.price}</td>
+             <td>
+              <a href="#" class="remove" data-id="${course.id}">X</a>
+             </td>
+    
+    
+         </tr>
+      `;
+        shoppingCartContent.appendChild(row);
+    });
+
+}
 
 // Listeners 
 
@@ -131,6 +161,10 @@ let loadEventListeners = () => {
     // when  Clear Cart  
 
     clearCartBtn.addEventListener('click', clearCart);
+
+    // Document Ready
+    document.addEventListener('DOMContentLoaded', getFromLocalStorage);
+
 }
 
 
