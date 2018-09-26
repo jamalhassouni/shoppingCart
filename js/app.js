@@ -99,11 +99,35 @@ let getCourseFromStorage = () => {
 
 
 let removeCourse = (e) => {
+    let course, courseId;
+    // Remove from the dom
     if (e.target.classList.contains('remove')) {
-        e.target.parentElement.parentElement.remove();
+        course = e.target.parentElement.parentElement;
+        course.remove();
+        courseId = course.querySelector('a').getAttribute('data-id');
     }
-}
+    console.log(courseId);
 
+    // Remove from the local storage
+    removeCourseLocalStorage(courseId);
+}
+// Remove from Local Storage 
+
+let removeCourseLocalStorage = id => {
+    // get the local storage data
+    let coursesLS = getCourseFromStorage();
+
+    // loop throught the array and find the index  to remove
+
+    coursesLS.forEach((courses, index) => {
+        if (courses.id === id) {
+            coursesLS.splice(index, 1);
+        }
+    });
+
+    // Add the rest of the array 
+    localStorage.setItem('courses', JSON.stringify(coursesLS));
+}
 
 // Clears the shopping cart 
 
