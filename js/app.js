@@ -61,17 +61,73 @@ let addIntoCart = course => {
   `;
     // Add into the shopping cart
     shoppingCartContent.appendChild(row);
+
+    // Add course into Storage
+    saveIntoStorage(course);
+
+}
+
+// Add the courses into  the local storage
+
+let saveIntoStorage = course => {
+    let courses = getCourseFromStorage();
+
+    // add the course into the array
+    courses.push(course);
+
+    // since storage only saves strings , we need to convert JSON into String
+    localStorage.setItem('courses', JSON.stringify(courses));
+}
+
+// Get the contents from storage
+
+let getCourseFromStorage = () => {
+    let courses;
+
+    // if something exist on storage then we get the value,otherwise create an empty array
+
+    if (localStorage.getItem('courses') === null) {
+        courses = [];
+    } else {
+        courses = JSON.parse(localStorage.getItem('courses'));
+    }
+
+    return courses;
 }
 
 // Remove course from the dom
 
 
 let removeCourse = (e) => {
+    let course, courseId;
+    // Remove from the dom
     if (e.target.classList.contains('remove')) {
-        e.target.parentElement.parentElement.remove();
+        course = e.target.parentElement.parentElement;
+        course.remove();
+        courseId = course.querySelector('a').getAttribute('data-id');
     }
-}
+    console.log(courseId);
 
+    // Remove from the local storage
+    removeCourseLocalStorage(courseId);
+}
+// Remove from Local Storage 
+
+let removeCourseLocalStorage = id => {
+    // get the local storage data
+    let coursesLS = getCourseFromStorage();
+
+    // loop throught the array and find the index  to remove
+
+    coursesLS.forEach((courses, index) => {
+        if (courses.id === id) {
+            coursesLS.splice(index, 1);
+        }
+    });
+
+    // Add the rest of the array 
+    localStorage.setItem('courses', JSON.stringify(coursesLS));
+}
 
 // Clears the shopping cart 
 
@@ -80,8 +136,46 @@ let clearCart = (e) => {
     while (shoppingCartContent.firstChild) {
         shoppingCartContent.removeChild(shoppingCartContent.firstChild);
     }
+
+    // Clear from Local Storage
+    clearLocalStorage();
 }
 
+// Clears the whole local storage
+let clearLocalStorage = () => {
+    localStorage.clear();
+}
+
+// Loads when document is ready and print courses into shopping cart
+
+let getFromLocalStorage = () => {
+    let coursesLS = getCourseFromStorage();
+
+    // Loop throught the courses and print into the cart
+
+    coursesLS.forEach(course => {
+        // create the <tr>
+        const row = document.createElement('tr');
+
+        // Build the template 
+        row.innerHTML = `
+         <tr>
+             <td>
+                <img src="${course.image}" width = '100px'>       
+             </td>
+             <td>${course.title}</td>
+             <td>${course.price}</td>
+             <td>
+              <a href="#" class="remove" data-id="${course.id}">X</a>
+             </td>
+    
+    
+         </tr>
+      `;
+        shoppingCartContent.appendChild(row);
+    });
+
+}
 
 // Listeners 
 
@@ -99,6 +193,10 @@ let loadEventListeners = () => {
     // when  Clear Cart  
 
     clearCartBtn.addEventListener('click', clearCart);
+
+    // Document Ready
+    document.addEventListener('DOMContentLoaded', getFromLocalStorage);
+
 }
 
 
