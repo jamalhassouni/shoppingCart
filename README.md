@@ -4,6 +4,7 @@
 
 A simple application that allows the user to view the courses and can add them to the shopping cart and control them as he wishes
  
+ ![Shopping Cart](screenshots/ShoppingCart.png)
 
 - User can add courses into the shopping cart.
 
